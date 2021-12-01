@@ -39,7 +39,12 @@ game.onUpdate(function () {
             spawnRate -= 10
             Enemy.spawnDonut()
             
-            
+        }
+    });
+    timer.throttle("spawnTaco", 2000, function () {
+        if (canSpawn) {
+            Enemy.spawnTaco(player);
+            enemysSpawned += 1;
         }
     })
     if (controller.up.isPressed()) {
