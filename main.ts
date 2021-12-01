@@ -37,14 +37,16 @@ function spawnEnemy() {
     enemy.x = Math.randomRange(0, 200)
     enemy.setVelocity(0, 50)
 }
+
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     player.destroy()
     canSpawn = false
     timer.after(2000, function () {
-        game.showLongText("You died! Press A to play again!", DialogLayout.Center)
+        game.showLongText("You died! Press A to play again!\n Score: " + info.score() + "\nHighscore: " + info.highScore(), DialogLayout.Center)
         game.reset()
+        info.saveHighScore()
     })
-})
+});
 let enemysSpawned = 0
 let enemy: Sprite = null
 let canSpawn = false
@@ -72,6 +74,7 @@ let spawnRate = 1000
 game.onUpdate(function () {
     timer.throttle("spawnEnemy", spawnRate, function () {
         if (canSpawn) {
+            info.changeScoreBy(1)
             spawnEnemy()
             enemysSpawned += 1
             if (enemysSpawned > 1) {
@@ -104,4 +107,9 @@ game.onUpdate(function () {
             player.x += 1
         }
     }
+    timer.throttle("changeScore", 1000, () => { 
+        info.showScore(true)
+        info.saveHighScore()
+    });
+    
 });
