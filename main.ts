@@ -104,4 +104,4 @@ game.onUpdate(function () {
             player.x += 1
         }
     }
-})
+});
